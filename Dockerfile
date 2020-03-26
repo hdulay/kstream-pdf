@@ -1,0 +1,3 @@
+FROM mozilla/sbt
+
+VOLUME . /
