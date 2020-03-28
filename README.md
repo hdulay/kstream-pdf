@@ -2,6 +2,8 @@
 
 This example uses KStreams to read a topic containing PDF documents in binary format. The KStreams application will parse the PDF using *org.apache.pdfbox* library and extract the text. The text and some metadata is routed to different topics based on content of the PDF. A S3 sink connector will read these topics and write them to a S3 bucket in AWS.
 
+***PDF files are big and could exceed the maximum size the Kafka Topic can hold. If you find your PDF files are too big, consider sending a reference (URL to Artifactory for example) to Kafka instead of the PDF contents and have your consumers download them from the reference.***
+
 ![Diagram](diagram.png)
 
 ## Credentials
