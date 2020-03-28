@@ -32,7 +32,7 @@ topics:
 		--config max.message.bytes=5000000
 
 send:
-	kafkacat -b localhost:9092 -t pdf -P pdf/test.pdf
+	kafkacat -b localhost:9092 -t pdf -P ${PDF}
 
 kstream:
 	docker run -d --name kstream -v ${PWD}/target/scala-2.12/:/project openjdk:11 java -jar project/kstream-pdf-assembly-0.1.0-SNAPSHOT.jar
