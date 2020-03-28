@@ -26,6 +26,9 @@ libraryDependencies += "io.confluent" % "kafka-avro-serializer" % "5.4.1"
 libraryDependencies += "org.apache.avro" % "avro" % "1.9.2"
 libraryDependencies += "org.apache.avro" % "avro-maven-plugin" % "1.9.2"
 
+// https://mvnrepository.com/artifact/org.scala-lang/scala-reflect
+libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.12.8"
+
 // https://mvnrepository.com/artifact/com.google.code.gson/gson
 libraryDependencies += "com.google.code.gson" % "gson" % "2.8.5"
 

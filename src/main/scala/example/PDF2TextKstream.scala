@@ -11,7 +11,7 @@ import org.apache.kafka.streams.{KafkaStreams, StreamsConfig}
 import org.apache.pdfbox.pdmodel.{PDDocument, PDDocumentInformation}
 import org.apache.pdfbox.text.PDFTextStripper
 
-case class PDF(meta:PDDocumentInformation, text:String)
+case class PDF(meta:Map[String, String], text:String)
 
 object PDF2TextKstream extends App {
 
@@ -30,20 +30,33 @@ object PDF2TextKstream extends App {
   val branches = pdfs.map((k,v) => {
 
     try{
+      import scala.reflect.runtime.universe._
+
       val document: PDDocument = PDDocument.load(v)
       val metadata = document.getDocumentInformation()
+      val md = Map(
+        "author" -> metadata.getAuthor,
+        "creator" -> metadata.getCreator,
+        "keys" -> metadata.getKeywords,
+        "producer" -> metadata.getProducer,
+        "subject" -> metadata.getSubject,
+        "title" -> metadata.getTitle
+      )
+
       val pdfStripper = new PDFTextStripper()
       val text = pdfStripper.getText(document)
       document.close()
-      (k, PDF(meta=metadata,text=text))
+      (k, PDF(meta=md,text=text))
     } catch {
-      case _: Throwable => (k, PDF(null, null))
+      case _: Throwable => {
+        print(_)
+        (k, PDF(null, null))
+      }
     }
 
-
   }).branch( // route documents
-    (k, v) => v.meta == null || v.meta.getTitle == null,
-    (k, v) => v.meta.getTitle().toLowerCase().contains("kafka"), // if title contains the word kafka
+    (k, v) => v.text == null, // if text is null
+    (k, v) => v.text.toLowerCase().contains("kafka"), // if text contains the word kafka
     (k, v) => true //
   )
 

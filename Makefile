@@ -7,6 +7,9 @@ cluster:
 ps:
 	docker-compose ps
 
+ksql:
+	docker exec -it ksql-cli ksql http://ksql-server:8088
+
 topics:
 	docker exec -it broker kafka-topics --bootstrap-server localhost:9092 --create \
 		--topic pdf --partitions 1 \
@@ -33,14 +36,3 @@ send:
 
 down:
 	docker-compose down
-
-connector:
-	@echo "TODO"
-# {
-#   "name": "pdf",
-#   "connector.class": "org.apache.kafka.connect.file.FileStreamSourceConnector",
-#   "key.converter": "org.apache.kafka.connect.storage.StringConverter",
-#   "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
-#   "file": "/project/pdf",
-#   "topic": "pdf"
-# }
