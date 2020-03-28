@@ -30,8 +30,6 @@ object PDF2TextKstream extends App {
   val branches = pdfs.map((k,v) => {
 
     try{
-      import scala.reflect.runtime.universe._
-
       val document: PDDocument = PDDocument.load(v)
       val metadata = document.getDocumentInformation()
       val md = Map(

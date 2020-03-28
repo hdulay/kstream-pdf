@@ -1,5 +1,5 @@
 build:
-	docker run -it --rm -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt -v ${PWD}:/app -w /app mozilla/sbt sbt assembly
+	docker run -it --rm -v ~/.ivy2:/root/.ivy2 -v ~/.sbt:/root/.sbt -v ${PWD}:/app -w /app mozilla/sbt sbt clean assembly
 
 cluster:
 	docker-compose up -d
@@ -34,5 +34,9 @@ topics:
 send:
 	kafkacat -b localhost:9092 -t pdf -P pdf/test.pdf
 
+kstream:
+	docker run -d --name kstream -v ${PWD}/target/scala-2.12/:/project openjdk:11 java -jar project/kstream-pdf-assembly-0.1.0-SNAPSHOT.jar
+
 down:
 	docker-compose down
+	docker kill kstream
