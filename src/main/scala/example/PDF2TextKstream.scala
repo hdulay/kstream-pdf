@@ -78,4 +78,8 @@ object PDF2TextKstream extends App {
   val streams: KafkaStreams = new KafkaStreams(topology, config)
   println(topology.describe())
   streams.start()
+
+  sys.ShutdownHookThread {
+    streams.close(java.time.Duration.ofSeconds(10))
+  }
 }
